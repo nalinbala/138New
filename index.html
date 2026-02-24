@@ -702,11 +702,11 @@
       }
 
       /* =========================
-         MEMORIAL SECTION
-      ========================= */
+   MEMORIAL SECTION
+========================= */
       .memorial-wrapper {
-        background-color: #153357; /* Matches your dark cinematic background */
-        color: rgba(255, 255, 255, 0.9);
+        background-color: #153357;
+        color: #ffffff;
         padding: 100px 20px;
         display: flex;
         justify-content: center;
@@ -714,17 +714,27 @@
       }
 
       .memorial-inner {
-        max-width: 800px; /* Keeps the line length comfortable for reading */
-        text-align: center;
+        max-width: 600px; /* Matches the exact width of the .plane-bodytext section */
+        width: 100%;
+        margin: 0 auto;
       }
 
       .memorial-title {
         font-family: "Merriweather", serif;
         font-size: clamp(28px, 4vw, 40px);
         font-weight: 700;
-        color: #f6a31c; /* Gold/Orange accent for reverence */
+        color: #f6a31c;
         margin-bottom: 20px;
         letter-spacing: 1px;
+        text-align: center; /* Keeps the heading centered */
+      }
+
+      .memorial-img {
+        display: block;
+        width: 335px; /* Locked size for all devices */
+        height: 518px; /* Locked size for all devices */
+        margin: 0 auto 30px auto; /* Centers the image perfectly */
+        object-fit: cover;
       }
 
       .memorial-divider {
@@ -735,12 +745,12 @@
       }
 
       .memorial-text {
-        font-family: "Merriweather", serif;
-        font-size: clamp(16px, 2.5vw, 18px);
-        line-height: 1.8;
+        font-family: "Roboto", sans-serif; /* Updated to Roboto */
+        font-size: inherit; /* Inherits the 15.5px to 20px global responsive sizing */
+        line-height: 1.6;
         margin-bottom: 24px;
-        font-weight: 300;
-        text-align: justify; /* Creates a clean, block-like appearance for the text */
+        font-weight: 400;
+        text-align: left; /* Aligns exactly like the McDonnell Douglas paragraph */
       }
 
       .memorial-text:last-child {
@@ -788,8 +798,8 @@
     <section class="intro-scroll-sequence" id="cinematic-text-sequence">
       <div class="intro-pin-container">
         <p class="intro-text">The date is December 4th, 1974.</p>
-        <p class="intro-text">The time is 10:05 PM.</p>
-        <p class="intro-text">The aircraft is six minutes from impact.</p>
+        <p class="intro-text">The time is 10:11 PM.</p>
+        <p class="intro-text">The aircraft is seconds from impact.</p>
         <p class="intro-text">Above the hills, thunderstorms block the view.</p>
         <p class="intro-text">In the cockpit, the instruments are lying.</p>
         <p class="intro-text final-intro-text">191 people have no idea.</p>
@@ -809,11 +819,11 @@
           <!-- TOP TEXT -->
           <div class="route-text route-text-top">
             <p>
-              On December 4, 1974, Martinair Flight 138, a DC-8 aircraft, met a
-              tragic fate when it crashed into the Seven Virgin Mountain Range
-              in Maskeliya, Sri Lanka, resulting in the loss of 191 lives on
-              board. This disastrous incident remains the deadliest air crash in
-              Sri Lanka's history.
+              On December 4, 1974, at 10:11 PM, Martinair Flight 138, a DC-8
+              aircraft, met a tragic fate when it crashed into the Seven Virgin
+              Mountain Range in Maskeliya, Sri Lanka, resulting in the loss of
+              191 lives on board. This disastrous incident remains the deadliest
+              air crash in Sri Lanka's history.
             </p>
           </div>
 
@@ -7243,27 +7253,32 @@
       <section id="memorial-section" class="memorial-wrapper">
         <div class="memorial-inner">
           <h2 class="memorial-title">In Memoriam</h2>
-          <div class="memorial-divider"></div>
+
+          <img
+            src="assets/images/memorial335x518.jpg"
+            alt="In Memoriam Tribute"
+            class="memorial-img"
+          />
+
+          <!-- <div class="memorial-divider"></div> -->
 
           <div class="memorial-content">
             <p class="memorial-text">
-              [cite_start]The recovery effort following the crash was severely
-              hindered by the difficult and inaccessible terrain of the Seven
-              Virgin mountain range[cite: 516, 520]. [cite_start]Ultimately,
-              only a small portion of the remains of the passengers and crew
-              could be recovered at the foot of the mountain[cite: 520].
-              [cite_start]Tragically, the impact was such that it was not
-              possible to identify any human remains as belonging to the cockpit
-              crew[cite: 523]. [cite_start]Post-mortem examinations conducted on
-              the recovered remains revealed no indications of toxication[cite:
-              522].
+              The recovery effort following the crash was severely hindered by
+              the difficult and inaccessible terrain of the Seven Virgin
+              mountain range. Ultimately, only a small portion of the remains of
+              the passengers and crew could be recovered at the foot of the
+              mountain. Tragically, the impact was such that it was not possible
+              to identify any human remains as belonging to the cockpit crew.
+              Post-mortem examinations conducted on the recovered remains
+              revealed no indications of toxication.
             </p>
             <p class="memorial-text">
-              [cite_start]In accordance with Muslim religious customs, a team of
-              dedicated volunteers respectfully interred the recovered remains
-              near the site[cite: 521]. Today, a memorial plaque placed by the
-              families of the victims rests on the slopes below the crash site
-              in the Theberton Tea Estate, marking their final resting place.
+              In accordance with Muslim religious customs, a team of dedicated
+              volunteers respectfully interred the recovered remains near the
+              site. Today, a memorial plaque placed by the families of the
+              victims rests on the slopes below the crash site in the Theberton
+              Tea Estate, marking their final resting place.
             </p>
             <p class="memorial-text">
               A primary public memorial is situated near the Norton Bridge
