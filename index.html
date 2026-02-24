@@ -590,9 +590,8 @@
       /* =========================
    INTRO VISIBILITY FIX
 ========================= */
-      /* Default: Hide the fallback video and ensure canvas is styled perfectly */
       .intro-video-portrait {
-        display: none !important;
+        display: none !important; /* The MP4 is officially retired */
       }
 
       #intro-sequence {
@@ -600,21 +599,10 @@
         width: 100vw;
         height: 100vh;
         object-fit: cover;
-        image-rendering: -webkit-optimize-contrast; /* Keeps mountain edges sharp */
+        image-rendering: -webkit-optimize-contrast;
       }
 
-      /* Mobile Portrait ONLY: Hide Canvas, Show Video */
-      @media (max-width: 767px) and (orientation: portrait) {
-        #intro-sequence {
-          display: none !important;
-        }
-        .intro-video-portrait {
-          display: block !important;
-          width: 100%;
-          height: 100vh;
-          object-fit: cover;
-        }
-      }
+      /* REMOVED the @media block that was hiding the canvas on portrait screens */
 
       /* ============ FOOTER STYLING ============ */
       .investigation-footer {
@@ -811,14 +799,6 @@
     <!-- ============ TEMP FULL-BLEED VISUAL ============ -->
     <section class="scroll-section scroll-intro-sequence">
       <canvas id="intro-sequence"></canvas>
-
-      <video
-        class="intro-video-portrait"
-        src="assets/videos/intro-portrait.mp4"
-        muted
-        playsinline
-        preload="auto"
-      ></video>
     </section>
 
     <!-- ============ ROUTE MAP ============ -->
@@ -7354,64 +7334,94 @@
       });
 
       // --- SECTION 1: DYNAMIC ADAPTIVE INTRO LOGIC ---
-      const introFrameCount = 150;
       const introCanvas = document.getElementById("intro-sequence");
       const introCtx = introCanvas.getContext("2d");
       const introImages = [];
-      const introSeq = { frame: 0 };
-      let currentIntroFolder = ""; // Tracks which assets are currently loaded
+      const introSeq = { progress: 0 }; // We now track overall progress (0 to 1) instead of absolute frames
+      let currentConfig = {};
 
       function initIntroSequence() {
-        // Set internal pixel resolution to match the window for sharpness
         introCanvas.width = window.innerWidth;
         introCanvas.height = window.innerHeight;
 
-        // Detect Mobile Landscape (wider than tall, under 1025px wide)
-        const isMobLand =
-          window.innerWidth <= 1024 && window.innerWidth > window.innerHeight;
-        const targetFolder = isMobLand
-          ? "intro-mobile-landscape"
-          : "intro-sequence";
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const isMobLand = window.innerWidth <= 1024 && !isPortrait;
 
-        // Only reload assets if the folder needs to change (saves data/memory)
-        if (currentIntroFolder !== targetFolder) {
-          currentIntroFolder = targetFolder;
-          introImages.length = 0; // Clear the array memory
+        // Define the rules for each screen type
+        let targetConfig;
+        if (isPortrait) {
+          targetConfig = {
+            folder: "intro-mobile-portrait",
+            count: 89,
+            prefix: "frame-",
+            pad: 3,
+            oneBased: true, // Starts at 001
+          };
+        } else if (isMobLand) {
+          targetConfig = {
+            folder: "intro-mobile-landscape",
+            count: 150,
+            prefix: "intro_",
+            pad: 5,
+            oneBased: false, // Starts at 00000
+          };
+        } else {
+          targetConfig = {
+            folder: "intro-sequence",
+            count: 150,
+            prefix: "intro_",
+            pad: 5,
+            oneBased: false,
+          };
+        }
 
-          for (let i = 0; i < introFrameCount; i++) {
+        // Only reload if the folder actually changed
+        if (currentConfig.folder !== targetConfig.folder) {
+          currentConfig = targetConfig;
+          introImages.length = 0;
+
+          for (let i = 0; i < currentConfig.count; i++) {
             const img = new Image();
-            img.src = `assets/images/scroll/${targetFolder}/intro_${String(
-              i
-            ).padStart(5, "0")}.webp`;
-            img.onload = () => {
-              if (i === introSeq.frame) renderIntro();
-            };
+            // Calculate the correct file name (e.g., frame-001 vs intro_00000)
+            const frameNum = currentConfig.oneBased
+              ? String(i + 1).padStart(currentConfig.pad, "0")
+              : String(i).padStart(currentConfig.pad, "0");
+
+            img.src = `assets/images/scroll/${currentConfig.folder}/${currentConfig.prefix}${frameNum}.webp`;
+
+            // Initial render on load
+            if (i === 0) img.onload = renderIntro;
             introImages.push(img);
           }
         } else {
-          // If just resizing window without orientation change, just re-render
           renderIntro();
         }
       }
 
       function renderIntro() {
-        const img = introImages[introSeq.frame];
+        // Calculate which frame to show based on scroll progress
+        const currentFrameIndex =
+          Math.floor(introSeq.progress * (currentConfig.count - 1)) || 0;
+        const img = introImages[currentFrameIndex];
+
         if (img && img.complete) {
           const canvasAspect = introCanvas.width / introCanvas.height;
           const imgAspect = img.width / img.height;
-
           let drawWidth, drawHeight, offsetX, offsetY;
 
-          // Full-bleed "Cover" logic
           if (canvasAspect > imgAspect) {
+            // Screen is wider than image (Desktop / Mobile Landscape)
             drawWidth = introCanvas.width;
             drawHeight = introCanvas.width / imgAspect;
             offsetX = 0;
             offsetY = (introCanvas.height - drawHeight) / 2;
           } else {
+            // Screen is taller than image (Mobile Portrait / iPad)
             drawWidth = introCanvas.height * imgAspect;
             drawHeight = introCanvas.height;
-            offsetX = (introCanvas.width - drawWidth) / 2;
+
+            // iPad FOCAL POINT FIX: Shifts camera 85% to the right to keep the plane visible
+            offsetX = (introCanvas.width - drawWidth) * 0.85;
             offsetY = 0;
           }
 
@@ -7420,24 +7430,22 @@
         }
       }
 
-      // Initial call and listener
       initIntroSequence();
       window.addEventListener("resize", initIntroSequence);
 
-      // Connect to ScrollTrigger
+      // Connect to ScrollTrigger using a 0-to-1 progress slider
       gsap.to(introSeq, {
-        frame: introFrameCount - 1,
-        snap: "frame",
+        progress: 1,
         ease: "none",
         scrollTrigger: {
           trigger: ".scroll-intro-sequence",
           start: "top top",
-          // Dynamic scroll duration: shorter for mobile screens so it doesn't drag on
+          // Makes the scroll duration dynamically comfortable on all devices
           end: () => (window.innerWidth < 1024 ? "+=1500" : "+=3000"),
           pin: true,
           scrub: 0.5,
           onUpdate: renderIntro,
-          invalidateOnRefresh: true, // Recalculates start/end points on device rotation
+          invalidateOnRefresh: true,
         },
       });
 
