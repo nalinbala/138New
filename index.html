@@ -624,12 +624,11 @@
         font-style: italic;
       }
 
-      /* =========================
-   MASTHEAD NAVIGATION
-========================= */
-      /* Default (Desktop & Mobile Portrait): Stays permanently at the top */
+      /* =========================================
+   1. MASTHEAD (NAVIGATION)
+========================================= */
       .masthead {
-        background-color: #0065ad; /* Sunday Times Blue */
+        background-color: #0065ad;
         height: 60px;
         width: 100%;
         position: fixed;
@@ -641,16 +640,6 @@
         align-items: center;
       }
 
-      /* Mobile Landscape Fix: Un-pin the masthead so it scrolls away */
-      @media (max-width: 932px) and (orientation: landscape) {
-        .masthead {
-          position: absolute;
-        }
-      }
-
-      /* ... keep your existing .masthead-inner and logo styles below this ... */
-
-      /* THIS WAS MISSING: Pushes the logos to the far left and right */
       .masthead-inner {
         width: 100%;
         max-width: 1400px;
@@ -661,20 +650,13 @@
         align-items: center;
       }
 
-      /* Force the wrappers to perfectly center their contents vertically */
-      .masthead-left,
-      .masthead-right {
-        display: flex;
-        align-items: center;
-      }
-
       .masthead-left img,
       .masthead-right img {
         height: 35px;
         width: auto;
+        display: block;
       }
 
-      /* Ensure the new links behave perfectly in the flex layout */
       .hub-link {
         display: flex;
         align-items: center;
@@ -682,30 +664,25 @@
         cursor: pointer;
       }
 
-      /* Remove the baseline gap for the right logo specifically */
-      .masthead-right img {
-        display: block;
+      /* Default Logo Visibility (Desktop/Tablet) */
+      .logo-full {
+        display: block !important;
       }
 
-      /* Default state: Show full desktop logo, hide mobile portrait logo */
-      .logo-desktop {
-        display: block;
-      }
       .logo-mobile {
-        display: none;
+        display: none !important;
       }
 
-      /* Mobile Portrait only (max-width: 479px) */
-      @media (max-width: 479px) {
-        .logo-desktop {
+      /* Mobile Swap & Alignment */
+      @media (max-width: 600px) {
+        .logo-full {
           display: none !important;
         }
         .logo-mobile {
           display: block !important;
         }
-        .masthead-left img,
-        .masthead-right img {
-          height: 28px; /* Scales the logos down slightly for tight mobile screens */
+        .masthead-inner {
+          padding: 0 15px; /* Aligns the edges perfectly on small phones */
         }
       }
 
