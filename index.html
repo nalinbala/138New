@@ -627,8 +627,10 @@
       /* =========================================
    1. MASTHEAD (NAVIGATION)
 ========================================= */
+
+      /* Default (Desktop & Mobile Portrait): Stays permanently at the top */
       .masthead {
-        background-color: #0065ad;
+        background-color: #0065ad; /* Sunday Times Blue */
         height: 60px;
         width: 100%;
         position: fixed;
@@ -638,6 +640,14 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
+      }
+
+      /* Mobile Landscape Fix: Un-pin the masthead so it scrolls away */
+      @media (max-width: 950px) and (orientation: landscape) {
+        .masthead {
+          position: absolute !important; /* Added !important to force it to scroll */
+          top: 0;
+        }
       }
 
       .masthead-inner {
