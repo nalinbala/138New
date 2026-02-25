@@ -674,6 +674,14 @@
         width: auto;
       }
 
+      /* Ensure the new links behave perfectly in the flex layout */
+      .hub-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
       /* Remove the baseline gap for the right logo specifically */
       .masthead-right img {
         display: block;
@@ -763,23 +771,32 @@
     <nav class="masthead">
       <div class="masthead-inner">
         <div class="masthead-left">
-          <img
-            src="assets/images/st-logo-full.svg"
-            alt="Sunday Times"
-            class="logo-desktop"
-          />
-          <img
-            src="assets/images/st-logo-mobile.svg"
-            alt="ST"
-            class="logo-mobile"
-          />
+          <a
+            href="https://nalinbala.github.io/showcase/"
+            class="hub-link"
+            aria-label="Return to Infographics Hub"
+          >
+            <img
+              src="assets/images/st-logo-full.svg"
+              alt="Sunday Times"
+              class="logo-full"
+            />
+            <img
+              src="assets/images/st-logo-mobile.svg"
+              alt="ST"
+              class="logo-mobile"
+            />
+          </a>
         </div>
+
         <div class="masthead-right">
-          <img
-            src="assets/images/infographics-logo.svg"
-            alt="Infographics"
-            class="logo-infographics"
-          />
+          <a
+            href="hub.html"
+            class="hub-link"
+            aria-label="Return to Infographics Hub"
+          >
+            <img src="assets/images/infographics-logo.svg" alt="Infographics" />
+          </a>
         </div>
       </div>
     </nav>
