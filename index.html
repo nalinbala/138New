@@ -17,6 +17,11 @@
     />
 
     <style>
+      html,
+      body {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
       /* =========================
          SCROLL INTRO SEQUENCE
       ========================= */
@@ -4099,17 +4104,18 @@
 
                   /* 1. Reduce the size of the black numbers */
                   .ai2html-crash-mob-l #g-Mob-L-Artboard_1 .g-pstyle0 {
-                    font-size: 18px !important; /* Reduced from 24px */
-                    width: 34px !important; /* Scaled down circle width */
-                    height: 34px !important; /* Scaled down circle height */
+                    font-size: 18px !important;
+                    width: 34px !important;
+                    height: 34px !important;
                     padding-top: 1px !important;
                     color: rgb(0, 0, 0);
-                  }
 
-                  /* 2. Reduce the size of the descriptive text blocks */
-                  .ai2html-crash-mob-l #g-Mob-L-Artboard_1 p {
-                    font-size: 13px !important; /* Reduced from 16px */
-                    line-height: 1.3 !important; /* Tighter line spacing for smaller screens */
+                    /* ADD THESE MISSING CENTERING RULES */
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    text-align: center !important;
+                    line-height: 1 !important;
                   }
 
                   /* 3. Reduce the specific bold labels (Initial graze, etc.) */
